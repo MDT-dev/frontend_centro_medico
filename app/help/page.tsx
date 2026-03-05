@@ -8,7 +8,7 @@ export default function HelpPage() {
       <Sidebar />
 
       <main className="flex-1 p-4 lg:p-6 lg:ml-64">
-        <Header title="Help & Support" description="Get help with using Tasko and find answers to common questions." />
+        <Header title="Ajuda e Suporte" description="Encontre respostas e suporte para usar a Clínica Digital." />
 
         <div className="mt-6">
           <HelpContent />

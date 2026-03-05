@@ -8,7 +8,7 @@ export default function SettingsPage() {
       <Sidebar />
 
       <main className="flex-1 p-4 lg:p-6 lg:ml-64">
-        <Header title="Settings" description="Manage your account preferences and application settings." />
+        <Header title="Configurações" description="Gerencie preferências e configurações da clínica." />
 
         <div className="mt-6">
           <SettingsContent />

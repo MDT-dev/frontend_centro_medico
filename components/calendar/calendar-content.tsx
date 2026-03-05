@@ -7,17 +7,17 @@ import { ChevronLeft, ChevronRight, Video } from "lucide-react"
 import { useState } from "react"
 
 const events = [
-  { id: 1, title: "Team Standup", time: "09:00 AM", duration: "30 min", type: "meeting", color: "bg-blue-500" },
-  { id: 2, title: "Design Review", time: "11:00 AM", duration: "1 hour", type: "review", color: "bg-purple-500" },
+  { id: 1, title: "Consulta - Pressão Arterial", time: "09:00 AM", duration: "30 min", type: "consultation", color: "bg-primary" },
+  { id: 2, title: "Campanhe Vacinação", time: "11:00 AM", duration: "1 hour", type: "campaign", color: "bg-green-600" },
   {
     id: 3,
-    title: "Client Presentation",
+    title: "Consulta - Triagem",
     time: "02:00 PM",
-    duration: "2 hours",
-    type: "presentation",
-    color: "bg-green-600",
+    duration: "45 min",
+    type: "consultation",
+    color: "bg-secondary",
   },
-  { id: 4, title: "Code Review Session", time: "04:30 PM", duration: "45 min", type: "meeting", color: "bg-amber-500" },
+  { id: 4, title: "Consulta - Acompanhamento", time: "04:30 PM", duration: "30 min", type: "followup", color: "bg-amber-500" },
 ]
 
 const daysInMonth = Array.from({ length: 30 }, (_, i) => i + 1)
@@ -34,7 +34,7 @@ export function CalendarContent() {
           <Button variant="outline" size="icon">
             <ChevronLeft className="w-4 h-4" />
           </Button>
-          <span className="font-semibold min-w-[120px] text-center">November 2024</span>
+          <span className="font-semibold min-w-[120px] text-center">Novembro 2024</span>
           <Button variant="outline" size="icon">
             <ChevronRight className="w-4 h-4" />
           </Button>
@@ -72,7 +72,7 @@ export function CalendarContent() {
         </Card>
 
         <Card className="p-6">
-          <h3 className="font-semibold text-lg mb-4">Today's Events</h3>
+          <h3 className="font-semibold text-lg mb-4">Eventos de Hoje</h3>
           <div className="space-y-3">
             {events.map((event, index) => (
               <div

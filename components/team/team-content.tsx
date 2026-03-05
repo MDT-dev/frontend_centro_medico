@@ -8,40 +8,40 @@ import { Mail, Phone, MoreHorizontal } from "lucide-react"
 
 const teamMembers = [
   {
-    name: "Alexandra Deff",
-    role: "Product Designer",
-    email: "alexandra@tasko.com",
+    name: "Dr. Maria Costa",
+    role: "Médica Geral",
+    email: "maria.costa@clinica.gov.ao",
+    status: "active",
+    tasks: 18,
+    avatar: "/avatars/avatar-1.jpg",
+    initials: "MC",
+  },
+  {
+    name: "Enfermeira Rosa",
+    role: "Enfermeira Especializada",
+    email: "rosa.santos@clinica.gov.ao",
     status: "active",
     tasks: 12,
-    avatar: "/avatars/avatar-1.jpg",
-    initials: "AD",
-  },
-  {
-    name: "Edwin Adenike",
-    role: "Frontend Developer",
-    email: "edwin@tasko.com",
-    status: "active",
-    tasks: 8,
     avatar: "/avatars/avatar-2.jpg",
-    initials: "EA",
+    initials: "ER",
   },
   {
-    name: "Isaac Oluwatemilorun",
-    role: "Backend Developer",
-    email: "isaac@tasko.com",
+    name: "Dr. João Silva",
+    role: "Médico Clínico",
+    email: "joao.silva@clinica.gov.ao",
     status: "away",
     tasks: 15,
     avatar: "/avatars/avatar-3.jpg",
-    initials: "IO",
+    initials: "JS",
   },
   {
-    name: "David Oshodi",
-    role: "UI/UX Designer",
-    email: "david@tasko.com",
+    name: "Técnico Samuel",
+    role: "Técnico de Laboratório",
+    email: "samuel.tech@clinica.gov.ao",
     status: "active",
-    tasks: 6,
+    tasks: 8,
     avatar: "/avatars/avatar-4.jpg",
-    initials: "DO",
+    initials: "TS",
   },
 ]
 
@@ -72,12 +72,12 @@ export function TeamContent() {
               </div>
 
               <Badge variant={member.status === "active" ? "default" : "secondary"}>
-                {member.status === "active" ? "Active" : "Away"}
+                {member.status === "active" ? "Em Serviço" : "Ausente"}
               </Badge>
 
               <div className="pt-2 border-t border-border">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Active Tasks</span>
+                  <span className="text-muted-foreground">Consultas Hoje</span>
                   <span className="font-semibold">{member.tasks}</span>
                 </div>
               </div>

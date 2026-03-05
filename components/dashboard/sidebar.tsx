@@ -1,23 +1,24 @@
 "use client"
 
-import { LayoutDashboard, CheckSquare, Calendar, BarChart3, Users, Settings, HelpCircle, LogOut } from "lucide-react"
+import { LayoutDashboard, Stethoscope, Calendar, BarChart3, Users, Settings, HelpCircle, LogOut, Pill, Users2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
 const menuItems = [
-  { icon: LayoutDashboard, label: "Dashboard", href: "/" },
-  { icon: CheckSquare, label: "Tasks", badge: "124", href: "/tasks" },
-  { icon: Calendar, label: "Calendar", href: "/calendar" },
-  { icon: BarChart3, label: "Analytics", href: "/analytics" },
-  { icon: Users, label: "Team", href: "/team" },
+  { icon: LayoutDashboard, label: "Painel de Controlo", href: "/" },
+  { icon: Stethoscope, label: "Consultas", badge: "8", href: "/tasks" },
+  { icon: Calendar, label: "Agendamentos", href: "/calendar" },
+  { icon: BarChart3, label: "Relatórios", href: "/analytics" },
+  { icon: Users2, label: "Equipa Médica", href: "/team" },
+  { icon: Pill, label: "Medicamentos", href: "/medicines" },
 ]
 
 const generalItems = [
-  { icon: Settings, label: "Settings", href: "/settings" },
-  { icon: HelpCircle, label: "Help", href: "/help" },
-  { icon: LogOut, label: "Logout", href: "/logout" },
+  { icon: Settings, label: "Configurações", href: "/settings" },
+  { icon: HelpCircle, label: "Ajuda", href: "/help" },
+  { icon: LogOut, label: "Sair", href: "/logout" },
 ]
 
 export function Sidebar() {
@@ -26,26 +27,21 @@ export function Sidebar() {
 
   return (
     <aside className="fixed top-0 left-0 w-64 bg-card border-r border-border p-4 h-screen overflow-y-auto lg:block">
-      <div className="flex items-center gap-2 mb-6 group cursor-pointer">
+      <div className="flex items-center gap-2 mb-8 group cursor-pointer">
         <Link href="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center transition-transform group-hover:scale-110 duration-300 relative">
-            <div
-              className="w-1.5 h-1.5 rounded-full bg-primary-foreground absolute"
-              style={{ top: "30%", left: "30%" }}
-            />
-            <div
-              className="w-1.5 h-1.5 rounded-full bg-primary-foreground absolute"
-              style={{ top: "30%", right: "30%" }}
-            />
-            <div className="w-3 h-1.5 border-b-2 border-primary-foreground rounded-full absolute bottom-2.5" />
+          <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center transition-transform group-hover:scale-110 duration-300">
+            <Stethoscope className="w-4 h-4 text-primary-foreground" />
           </div>
-          <span className="text-lg font-semibold text-foreground">Tasko</span>
+          <div className="flex flex-col">
+            <span className="text-sm font-bold text-foreground leading-none">Clínica</span>
+            <span className="text-[10px] font-medium text-primary">Digital</span>
+          </div>
         </Link>
       </div>
 
       <div className="space-y-4">
         <div>
-          <p className="text-[10px] font-medium text-muted-foreground mb-2 uppercase tracking-wider">Menu</p>
+          <p className="text-[10px] font-medium text-muted-foreground mb-2 uppercase tracking-wider">Operações</p>
           <nav className="space-y-0.5">
             {menuItems.map((item) => {
               const isActive = pathname === item.href
@@ -77,7 +73,7 @@ export function Sidebar() {
         </div>
 
         <div>
-          <p className="text-[10px] font-medium text-muted-foreground mb-2 uppercase tracking-wider">General</p>
+          <p className="text-[10px] font-medium text-muted-foreground mb-2 uppercase tracking-wider">Sistema</p>
           <nav className="space-y-0.5">
             {generalItems.map((item) => {
               const isActive = pathname === item.href

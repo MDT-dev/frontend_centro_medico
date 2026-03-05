@@ -5,16 +5,16 @@ import { useState } from "react"
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from "recharts"
 
 const chartData = [
-  { day: "S", value: 45, label: "Sunday" },
-  { day: "M", value: 75, label: "Monday" },
-  { day: "T", value: 74, label: "Tuesday" },
-  { day: "W", value: 92, label: "Wednesday" },
-  { day: "T", value: 35, label: "Thursday" },
-  { day: "F", value: 60, label: "Friday" },
-  { day: "S", value: 50, label: "Saturday" },
+  { day: "Seg", value: 18, label: "Segunda-feira" },
+  { day: "Ter", value: 22, label: "Terça-feira" },
+  { day: "Qua", value: 19, label: "Quarta-feira" },
+  { day: "Qui", value: 25, label: "Quinta-feira" },
+  { day: "Sex", value: 20, label: "Sexta-feira" },
+  { day: "Sab", value: 14, label: "Sábado" },
+  { day: "Dom", value: 8, label: "Domingo" },
 ]
 
-const barColors = ["#059669", "#047857", "#10b981", "#065f46", "#059669", "#047857", "#10b981"]
+const barColors = ["#0066CC", "#0066CC", "#0066CC", "#0066CC", "#0066CC", "#00A86B", "#A0A0A0"]
 
 export function ProjectAnalytics() {
   const [hoveredBar, setHoveredBar] = useState<number | null>(null)
@@ -39,10 +39,10 @@ export function ProjectAnalytics() {
       style={{ animationDelay: "400ms" }}
     >
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-semibold text-foreground">Project Analytics</h2>
+        <h2 className="text-xl font-semibold text-foreground">Consultas Semanais</h2>
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
-          <div className="w-2 h-2 rounded-full bg-emerald-600"></div>
-          <span>Weekly Activity</span>
+          <div className="w-2 h-2 rounded-full bg-primary"></div>
+          <span>Atividade Semanal</span>
         </div>
       </div>
 
@@ -99,12 +99,12 @@ export function ProjectAnalytics() {
       {/* Summary stats */}
       <div className="pt-4 border-t border-muted/50 flex items-center justify-between">
         <div className="text-sm">
-          <span className="text-muted-foreground">Average: </span>
-          <span className="font-semibold text-foreground">{average}%</span>
+          <span className="text-muted-foreground">Média: </span>
+          <span className="font-semibold text-foreground">{average} consultas</span>
         </div>
         <div className="text-sm">
-          <span className="text-muted-foreground">Peak: </span>
-          <span className="font-semibold text-emerald-600">{maxValue}%</span>
+          <span className="text-muted-foreground">Pico: </span>
+          <span className="font-semibold text-primary">{maxValue} consultas</span>
         </div>
       </div>
     </Card>

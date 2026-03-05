@@ -7,35 +7,35 @@ import { Plus } from "lucide-react"
 
 const members = [
   {
-    name: "Alexandra Deff",
-    task: "Github Project Repository",
-    status: "Completed",
-    statusColor: "bg-emerald-100 text-emerald-700",
-    avatar: "AD",
+    name: "Dr. Maria Costa",
+    task: "Atender Pacientes - Sala 1",
+    status: "Activo",
+    statusColor: "bg-green-100 text-green-700",
+    avatar: "MC",
     avatarImage: "/avatars/avatar-1.jpg",
   },
   {
-    name: "Edwin Adenike",
-    task: "Integrate User Authentication System",
-    status: "In Progress",
-    statusColor: "bg-amber-100 text-amber-700",
-    avatar: "EA",
+    name: "Enfermeira Rosa",
+    task: "Vacinação - Campanha Sarampo",
+    status: "Em Progresso",
+    statusColor: "bg-blue-100 text-blue-700",
+    avatar: "ER",
     avatarImage: "/avatars/avatar-2.jpg",
   },
   {
-    name: "Isaac Oluwatemilorun",
-    task: "Develop Search and Filter Functionality",
-    status: "Pending",
-    statusColor: "bg-rose-100 text-rose-700",
-    avatar: "IO",
+    name: "Dr. João Silva",
+    task: "Triagem e Vital Signs",
+    status: "Disponível",
+    statusColor: "bg-purple-100 text-purple-700",
+    avatar: "JS",
     avatarImage: "/avatars/avatar-3.jpg",
   },
   {
-    name: "David Oshodi",
-    task: "Responsive Layout for Homepage",
-    status: "In Progress",
+    name: "Técnico Samuel",
+    task: "Esterilização de Equipamentos",
+    status: "Em Progresso",
     statusColor: "bg-amber-100 text-amber-700",
-    avatar: "DO",
+    avatar: "TS",
     avatarImage: "/avatars/avatar-4.jpg",
   },
 ]
@@ -47,10 +47,10 @@ export function TeamCollaboration() {
       style={{ animationDelay: "600ms" }}
     >
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-semibold text-foreground">Team Collaboration</h2>
+        <h2 className="text-xl font-semibold text-foreground">Equipa em Serviço</h2>
         <Button variant="outline" size="sm" className="transition-all duration-300 hover:scale-105 bg-transparent">
           <Plus className="w-4 h-4 mr-1" />
-          Add Member
+          Novo Membro
         </Button>
       </div>
       <div className="space-y-4">
@@ -67,7 +67,7 @@ export function TeamCollaboration() {
             <div className="flex-1 min-w-0">
               <p className="font-semibold text-foreground text-sm">{member.name}</p>
               <p className="text-xs text-muted-foreground truncate">
-                Working on <span className="font-medium">{member.task}</span>
+                <span className="font-medium">{member.task}</span>
               </p>
             </div>
             <span
