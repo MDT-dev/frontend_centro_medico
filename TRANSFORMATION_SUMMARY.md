@@ -1,4 +1,4 @@
-# Transformação Tasko → Clínica Digital Angolana
+# Transformação Tasko → Centro Médico Digital Angolana
 
 ## Visão Geral
 O sistema Tasko foi completamente transformado em um sistema de gestão moderno, completo e impactante para um Posto de Saúde no contexto angolano.
@@ -9,7 +9,7 @@ O sistema Tasko foi completamente transformado em um sistema de gestão moderno,
 - **Paleta de Cores**: Azul médico (#0066CC) + Verde saúde (#00A86B) + Branco/Cinzento
 - **Modo Escuro**: Cores adaptadas para melhor conforto visual em ambientes com iluminação variável
 - **Ícones**: Substituídos por ícones relevantes à saúde (Stethoscope, Heart, Pill, etc.)
-- **Branding**: Logo novo "Clínica Digital" em lugar de "Tasko"
+- **Branding**: Logo novo "Centro Médico Digital" em lugar de "Tasko"
 
 ### 2. Menu Navegação
 **De:** Dashboard, Tasks, Calendar, Analytics, Team, Settings, Help, Logout
@@ -85,7 +85,7 @@ O sistema Tasko foi completamente transformado em um sistema de gestão moderno,
 ### Para Saúde Pública:
 - Relatórios epidemiológicos mensais
 - Acompanhamento de campanhas de vacinação
-- Estatísticas de ocupação e atividade clínica
+- Estatísticas de ocupação e atividade Centro Médico
 - Dados agregados para autoridades
 
 ### Para Pacientes e Profissionais:
@@ -100,11 +100,11 @@ O sistema Tasko foi completamente transformado em um sistema de gestão moderno,
 - Interface responsiva para dispositivos com diferentes resoluções
 - Dados e contexto culturalmente apropriados
 - Linguagem acessível para profissionais com diferentes níveis técnicos
-- Estrutura baseada em funcionalidades essenciais para clínicas com recursos limitados
+- Estrutura baseada em funcionalidades essenciais para Centro Médicos com recursos limitados
 
 ## Resultado Final
 
-Um sistema profissional, moderno e impactante que transforma a gestão administrativa e clínica de postos de saúde em Angola, melhorando:
+Um sistema profissional, moderno e impactante que transforma a gestão administrativa e Centro Médico de postos de saúde em Angola, melhorando:
 - Eficiência do atendimento
 - Qualidade dos dados epidemiológicos
 - Organização das consultas e campanhas
@@ -143,7 +143,7 @@ Um sistema profissional, moderno e impactante que transforma a gestão administr
 ### Conteúdo:
 - `/components/tasks/tasks-content.tsx` - Dados de consultas
 - `/components/calendar/calendar-content.tsx` - Agendamentos
-- `/components/analytics/analytics-content.tsx` - Estatísticas clínicas
+- `/components/analytics/analytics-content.tsx` - Estatísticas Centro Médicos
 - `/components/team/team-content.tsx` - Equipa de profissionais
 
 ---
