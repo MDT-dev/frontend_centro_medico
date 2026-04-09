@@ -15,8 +15,7 @@ import {
 } from "@/lib/schemas/user";
 import { useCreateUser, useUpdateUser } from "@/lib/hooks/useUsers";
 import { useEffect } from "react";
-import { toast } from "sonner";
-
+import { toast } from "@/hooks/use-toast";
 interface UserModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -31,36 +30,50 @@ export function UserModal({ open, onOpenChange, user }: UserModalProps) {
 
   useEffect(() => {
     if (createMutation.isSuccess) {
-      toast.success(
-        user ? "Usuário atualizado com sucesso!" : "Usuário criado com sucesso!"
-      );
+      toast({
+        description: user ? "Usuário atualizado com sucesso!" : "Usuário criado com sucesso!",
+      });
       onOpenChange(false);
     }
   }, [createMutation.isSuccess, user, onOpenChange]);
 
   useEffect(() => {
     if (updateMutation.isSuccess) {
-      toast.success("Usuário atualizado com sucesso!");
+      toast({
+        title:"Sucesso",  
+        description: "Usuário atualizado com sucesso!",
+      });
       onOpenChange(false);
     }
   }, [updateMutation.isSuccess, onOpenChange]);
 
   useEffect(() => {
     if (createMutation.isError) {
-      toast.error("Erro ao criar usuário");
+      toast({
+        title: "Erro",
+        description: "Erro ao criar usuário.",
+      });
     }
     if (updateMutation.isError) {
-      toast.error("Erro ao atualizar usuário");
+      toast({
+        title: "Erro",
+        description: "Erro ao atualizar usuário.",
+      });
     }
   }, [createMutation.isError, updateMutation.isError]);
 
   const handleSubmit = async (data: CreateUserInput | UpdateUserInput) => {
     if (user) {
-      await updateMutation.mutateAsync(data as UpdateUserInput);
+      const { id, ...rest } = data as UpdateUserInput
+
+      await updateMutation.mutateAsync({
+        id: id!,
+        payload: rest,
+      })
     } else {
-      await createMutation.mutateAsync(data as CreateUserInput);
+      await createMutation.mutateAsync(data as CreateUserInput)
     }
-  };
+  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

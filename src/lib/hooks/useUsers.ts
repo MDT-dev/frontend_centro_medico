@@ -7,7 +7,6 @@ import {
   ChangePasswordInput,
   User,
 } from "@/lib/schemas/user";
-import { API_CONFIG } from "../config";
 import { api } from "../api";
 
 export async function listUsers(): Promise<User[]> {
@@ -20,15 +19,25 @@ export async function createUsers(payload: Partial<CreateUserInput>) {
   return data;
 }
 
-export async function updateUsers(id: string, payload: Partial<UpdateUserInput>) {
+export async function updateUsers(
+  id: string,
+  payload: Partial<UpdateUserInput>,
+) {
   const { data } = await api.put(`/users/${id}`, payload);
+  return data;
+}
+
+export async function changePassword(
+  payload: Partial<ChangePasswordInput>,
+) {
+  const { data } = await api.put(`/users/change-password`, payload);
   return data;
 }
 
 export async function deleteUsers(id: string) {
   const { data } = await api.delete(`/users/${id}`);
   return data;
-}  
+}
 
 export const useUsersList = () => {
   return useQuery({
@@ -36,7 +45,6 @@ export const useUsersList = () => {
     queryFn: listUsers,
   });
 };
-
 
 export const useCreateUser = () => {
   const queryClient = useQueryClient();
@@ -46,16 +54,19 @@ export const useCreateUser = () => {
   });
 };
 
-
 export const useUpdateUser = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, payload }: { id: string; payload: Partial<UpdateUserInput> }) =>
-      updateUsers(id, payload),
+    mutationFn: ({
+      id,
+      payload,
+    }: {
+      id: string;
+      payload: Partial<UpdateUserInput>;
+    }) => updateUsers(id, payload),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["users"] }),
   });
 };
-
 
 export const useDeleteUser = () => {
   const queryClient = useQueryClient();
@@ -65,24 +76,16 @@ export const useDeleteUser = () => {
   });
 };
 
-
-
-
-
-
 export const useChangePassword = () => {
+  const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (data: ChangePasswordInput) => {
-      const response = await fetch(
-        `${API_CONFIG.BASE_URL}users/change-password`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
-        },
-      );
-      if (!response.ok) throw new Error("Falha ao alterar senha");
-      return response.json();
-    },
+    mutationFn: ({
+      payload,
+    }: {
+      payload: Partial<ChangePasswordInput>;
+    }) => changePassword(payload),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["users"] }),
   });
 };
+
+

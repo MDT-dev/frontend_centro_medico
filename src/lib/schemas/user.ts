@@ -30,10 +30,7 @@ export const createUserSchema = z.object({
     .string()
     .min(6, "Senha deve ter pelo menos 6 caracteres")
     .max(100, "Senha deve ter no máximo 100 caracteres"),
-  fullName: z
-    .string()
-    .min(2, "Nome completo deve ter pelo menos 2 caracteres")
-    .max(100, "Nome completo deve ter no máximo 100 caracteres"),
+  
   phone: z
     .string()
     .regex(/^\d{10,15}$/, "Telefone deve ter entre 10 e 15 dígitos")
@@ -45,7 +42,7 @@ export const createUserSchema = z.object({
 export const updateUserSchema = createUserSchema
   .omit({ password: true })
   .extend({
-    id: z.string(),
+    id: z.string().optional(),
   });
 
 export const changePasswordSchema = z

@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   createUserSchema,
@@ -27,7 +27,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { FieldGroup } from "@/components/ui/field";
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
 
 interface UserFormProps {
   user?: User;
@@ -41,22 +48,20 @@ export function UserForm({ user, onSubmit, isLoading }: UserFormProps) {
     resolver: zodResolver(schema),
     defaultValues: user
       ? {
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-          fullName: user.firstName + " " + user.lastName,
-          phone: user.phone || "",
-          role: user.role,
-        }
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        phone: user.phone || "",
+        role: user.role,
+      }
       : {
-          firstName: "",
-          lastName: "",
-          email: "",
-          password: "",
-          fullName: "",
-          phone: "",
-          role: UserRole.PACIENTE,
-        },
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        phone: "",
+        role: UserRole.PACIENTE,
+      },
   });
 
   const handleSubmit = async (data: any) => {
@@ -73,79 +78,98 @@ export function UserForm({ user, onSubmit, isLoading }: UserFormProps) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-        <FieldGroup>
-          <FormField
-            control={form.control}
-            name="fullName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Nome Completo *</FormLabel>
-                <FormControl>
-                  <Input placeholder="João Silva" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
+      <form id="user-form" onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+        <FieldGroup className="grid grid-cols-2 gap-6">
+          <Controller
             name="firstName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Primeiro Nome *</FormLabel>
-                <FormControl>
-                  <Input placeholder="João" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel htmlFor="firstName">Primeiro Nome</FieldLabel>
+                <Input
+                  {...field}
+                  id="firstName"
+                  aria-invalid={fieldState.invalid}
+                  placeholder="firstName"
+                  autoComplete="off"
+                />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
             )}
           />
-             <FormField
-            control={form.control}
+
+          <Controller
             name="lastName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Sobrenome *</FormLabel>
-                <FormControl>
-                  <Input placeholder="Silva" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel htmlFor="lastName">Sobrenome</FieldLabel>
+                <Input
+                  {...field}
+                  id="lastName"
+                  aria-invalid={fieldState.invalid}
+                  placeholder="lastName"
+                  autoComplete="off"
+                />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
             )}
           />
-        </FieldGroup>
 
-        <FieldGroup>
-          <FormField
-            control={form.control}
+          <Controller
             name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email *</FormLabel>
-                <FormControl>
-                  <Input type="email" placeholder="joao@centro.med" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <Input
+                  {...field}
+                  id="email"
+                  aria-invalid={fieldState.invalid}
+                  placeholder="email"
+                  autoComplete="off"
+                />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
             )}
           />
 
-          <FormField
-            control={form.control}
+          <Controller
             name="role"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Função *</FormLabel>
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value={UserRole.ADMIN}>Administrador</SelectItem>
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field className="flex flex-col" orientation="vertical" data-invalid={fieldState.invalid}>
+                <FieldContent>
+                  <FieldLabel htmlFor="role">Função</FieldLabel>
+                  {/* <FieldDescription>
+                    Selecione a função do usuário.
+                  </FieldDescription> */}
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </FieldContent>
+                <Select
+                  name={field.name}
+                  value={field.value}
+                  onValueChange={field.onChange}
+                >
+                  <SelectTrigger
+                    id="role"
+                    aria-invalid={fieldState.invalid}
+                    className="w-full"
+                  >
+                    <SelectValue placeholder="Selecione a função" />
+                  </SelectTrigger>
+                  <SelectContent position="item-aligned">
+                    <SelectItem value={UserRole.ADMIN}>
+                      Administrador
+                    </SelectItem>
                     <SelectItem value={UserRole.GERENTE}>Gerente</SelectItem>
                     <SelectItem value={UserRole.MEDICO}>Médico</SelectItem>
                     <SelectItem value={UserRole.RECEPCIONISTA}>
@@ -154,61 +178,66 @@ export function UserForm({ user, onSubmit, isLoading }: UserFormProps) {
                     <SelectItem value={UserRole.PACIENTE}>Paciente</SelectItem>
                   </SelectContent>
                 </Select>
-                <FormMessage />
-              </FormItem>
+              </Field>
             )}
           />
-        </FieldGroup>
 
-        {!user && (
-          <FieldGroup>
-            <FormField
-              control={form.control}
+          <Controller
+            name="phone"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel htmlFor="phone">Telefone</FieldLabel>
+                <Input
+                  {...field}
+                  id="phone"
+                  aria-invalid={fieldState.invalid}
+                  placeholder="phone"
+                  autoComplete="off"
+                />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+          {!user && (
+            <Controller
               name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Senha *</FormLabel>
-                  <FormControl>
-                    <Input type="password" placeholder="••••••" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="password">Senha</FieldLabel>
+                  <Input
+                    {...field}
+                    id="password"
+                    aria-invalid={fieldState.invalid}
+                    placeholder="password"
+                    autoComplete="off"
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
-          </FieldGroup>
-        )}
+          )}
 
-        <FieldGroup>
-          <FormField
-            control={form.control}
-            name="phone"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Telefone</FormLabel>
-                <FormControl>
-                  <Input
-                    type="tel"
-                    placeholder="11999999999"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-         
         </FieldGroup>
-
-        <div className="flex justify-end gap-3 pt-4">
+        <Field orientation="horizontal">
           <Button
-            type="submit"
-            disabled={isLoading}
+            type="button"
+            variant="outline"
+            onClick={() => form.reset()}
           >
-            {isLoading ? "Salvando..." : user ? "Atualizar" : "Criar Usuário"}
+            Reset
           </Button>
-        </div>
+          <Button type="submit" form="user-form" disabled={isLoading}>
+            {isLoading ? "Salvando..." : user ? "Atualizar" : "Criar"}
+          </Button>
+        </Field>
       </form>
     </Form>
   );
 }
+

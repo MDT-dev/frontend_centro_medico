@@ -1,11 +1,13 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -19,14 +21,14 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { FieldGroup } from "@/components/ui/field"; 
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import {
   changePasswordSchema,
   ChangePasswordInput,
 } from "@/lib/schemas/user";
 import { useChangePassword } from "@/lib/hooks/useUsers";
 import { useEffect } from "react";
-import { toast } from "sonner";
+import { toast } from "@/hooks/use-toast";
 
 interface ChangePasswordModalProps {
   open: boolean;
@@ -37,7 +39,6 @@ interface ChangePasswordModalProps {
 export function ChangePasswordModal({
   open,
   onOpenChange,
-  userId,
 }: ChangePasswordModalProps) {
   const mutation = useChangePassword();
   const form = useForm<ChangePasswordInput>({
@@ -51,7 +52,11 @@ export function ChangePasswordModal({
 
   useEffect(() => {
     if (mutation.isSuccess) {
-      toast.success("Senha alterada com sucesso!");
+      toast({
+        title: "Senha Alterada",
+        description: "Sua senha foi alterada com sucesso.",
+      });
+
       onOpenChange(false);
       form.reset();
     }
@@ -59,12 +64,15 @@ export function ChangePasswordModal({
 
   useEffect(() => {
     if (mutation.isError) {
-      toast.error("Erro ao alterar senha");
+      toast({
+        title: "Erro",
+        description: "Erro ao alterar senha.",
+      });
     }
   }, [mutation.isError]);
 
   const handleSubmit = async (data: ChangePasswordInput) => {
-    await mutation.mutateAsync(data);
+    await mutation.mutateAsync({ payload: data });
   };
 
   return (
@@ -78,82 +86,92 @@ export function ChangePasswordModal({
         </DialogHeader>
         <Form {...form}>
           <form
+            id="change-password-form"
             onSubmit={form.handleSubmit(handleSubmit)}
             className="space-y-6"
           >
-            <FieldGroup>
-              <FormField
-                control={form.control}
+            <FieldGroup className="grid grid-cols-2 gap-6">
+              <Controller
                 name="currentPassword"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Senha Atual *</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="••••••"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="currentPassword">Senha Atual</FieldLabel>
+                    <Input
+                      {...field}
+                      id="currentPassword"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="Senha Atual"
+                      autoComplete="off"
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
                 )}
               />
-
-              <FormField
-                control={form.control}
+              <Controller
                 name="newPassword"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Nova Senha *</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="••••••"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
                 control={form.control}
-                name="confirmPassword"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Confirmar Senha *</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="••••••"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="newPassword">Nova Senha</FieldLabel>
+                    <Input
+                      {...field}
+                      id="newPassword"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="Nova Senha"
+                      autoComplete="off"
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
                 )}
               />
-            </FieldGroup>
+              <Controller
+                name="confirmPassword"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="confirmPassword">Confirmar Senha</FieldLabel>
+                    <Input
+                      {...field}
+                      id="confirmPassword"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="Confirmar Senha"
+                      autoComplete="off"
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
 
-            <div className="flex justify-end gap-3 pt-4">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => onOpenChange(false)}
-              >
-                Cancelar
-              </Button>
-              <Button
-                type="submit"
-                disabled={mutation.isPending}
-              >
-                {mutation.isPending ? "Alterando..." : "Alterar Senha"}
-              </Button>
-            </div>
+
+            </FieldGroup>
           </form>
         </Form>
+        <DialogFooter className="justify-end">
+          <DialogClose asChild>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => form.reset()}
+            >
+              Cancelar
+            </Button>
+          </DialogClose>
+
+          <Button
+            type="submit"
+            form="change-password-form"
+            disabled={mutation.isPending}
+          >
+            {mutation.isPending ? "Alterando..." : "Alterar Senha"}
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
