@@ -148,7 +148,7 @@ export default function TasksPage() {
                 {/* DATA */}
                 <FormField
                   control={form.control}
-                  name="date"
+                  name="time"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
                       <FormLabel>Data</FormLabel>
@@ -167,7 +167,7 @@ export default function TasksPage() {
                         <PopoverContent className="p-0">
                           <Calendar
                             mode="single"
-                            selected={field.value}
+                            selected={new Date(field.value)}
                             onSelect={field.onChange}
                           />
                         </PopoverContent>

@@ -64,8 +64,10 @@ const tasks = [
     tags: ["Materna", "Triagem"],
   },
 ]
-
-export function TasksContent() {
+type Props = {
+  onOpenModal: () => void
+}
+export function TasksContent({ onOpenModal }: Props) {
   const [filter, setFilter] = useState("all")
 
   const filteredTasks =

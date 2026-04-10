@@ -108,7 +108,7 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
             Esqueceu a senha?
           </Link>
 
-          <Button
+          {/* <Button
             type="submit"
             disabled={loading}
             className="bg-cyan-600 hover:bg-cyan-700"
@@ -117,7 +117,19 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
               <LoaderPinwheel className="mr-2 h-4 w-4 animate-spin" />
             )}
             Login
+          </Button> */}
+          <Link href={"/admin"}>
+        
+           <Button
+            
+            className="bg-cyan-600 hover:bg-cyan-700"
+          >
+            {loading && (
+              <LoaderPinwheel className="mr-2 h-4 w-4 animate-spin" />
+            )}
+            Login
           </Button>
+            </Link>
         </div>
       </form>
     </div>

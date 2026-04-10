@@ -10,21 +10,20 @@ import { Logo } from "../ui-system/logo"
 const menuItems = [
   { icon: LayoutDashboard, label: "Painel de Controlo", href: "/admin" },
   { icon: Users2, label: "Gestão de Usuários", badge: "8", href: "/admin/users" },
+  { icon: Users2, label: "Gestão de Pacientes", badge: "8", href: "/admin/pacientes" },
   { icon: Stethoscope, label: "Consultas", badge: "8", href: "/admin/consultas" },
   // { icon: Calendar, label: "Agendamentos", href: "/agendamento" },
-  { icon: BarChart3, label: "Relatórios", href: "/admin/analytics" },
+  { icon: BarChart3, label: "Relatórios", href: "/admin/calendar" },
   { icon: Users2, label: "Equipa Médica", href: "/admin/team" },
   { icon: Pill, label: "Medicamentos", href: "/admin/medicines" },
   { icon: Coins, label: "Financeiro", href: "/admin/financeiro" },
-  { icon: Coins, label: "alerta", href: "/admin/financeiro" },
-  
 
 ]
 
 const generalItems = [
-  { icon: Settings, label: "Configurações", href: "/settings" },
-  { icon: HelpCircle, label: "Ajuda", href: "/help" },
-  { icon: LogOut, label: "Sair", href: "/logout" },
+  { icon: Settings, label: "Configurações", href: "/admin/settings" },
+  { icon: HelpCircle, label: "Ajuda", href: "/admin/help" },
+  { icon: LogOut, label: "Sair", href: "/admin/logout" },
 ]
 
 export function Sidebar() {

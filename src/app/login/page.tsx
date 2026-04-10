@@ -53,9 +53,7 @@ export default function AuthenticationPage() {
 
                     <div className="relative z-20 flex items-start text-lg font-medium">
                         <Link href="/">
-                            <Logo>
-
-                            </Logo>
+                            <Logo/>
                         </Link>
                     </div>
                 </div>
