@@ -1,19 +1,14 @@
-import { Sidebar } from "@/components/dashboard/sidebar"
 import { Header } from "@/components/dashboard/header"
 import { HelpContent } from "@/components/help/help-content"
 
 export default function HelpPage() {
   return (
-    <div className="flex min-h-screen bg-background">
-      <Sidebar />
 
-      <main className="flex-1 p-4 lg:p-6 lg:ml-64">
-        <Header title="Ajuda e Suporte" description="Encontre respostas e suporte para usar a Centro Médico Digital." />
 
-        <div className="mt-6">
-          <HelpContent />
-        </div>
-      </main>
-    </div>
+    <main className="p-6">
+      <Header title="Ajuda e Suporte" description="Encontre respostas e suporte para usar a Centro Médico Digital." />
+
+      <HelpContent />
+    </main>
   )
 }

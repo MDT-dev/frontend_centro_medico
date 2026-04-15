@@ -8,16 +8,10 @@ import RelatorioFinanceiroPage from "@/components/dashboard/RelatorioFinanceiro"
 
 export default function CalendarPage() {
   return (
-    <div className="flex min-h-screen bg-background">
-      <Sidebar />
+      <main className="p-6">
 
-      <main className="flex-1 p-4 lg:p-6 lg:ml-64">
-
-        <div className="mt-6">
           <RelatorioFinanceiroPage />
-        </div>
       </main>
-    </div>
   )
 }
 

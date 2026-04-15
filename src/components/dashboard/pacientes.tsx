@@ -317,7 +317,7 @@ export default function GerenciamentoPacientesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+    <div className="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       <div className="p-6 space-y-6 max-w-7xl mx-auto">
         {/* HEADER */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -482,7 +482,7 @@ export default function GerenciamentoPacientesPage() {
               </CardHeader>
 
               <CardContent className="p-0">
-                <div className="overflow-x-auto">
+                <div className="">
                   <Table>
                     <TableHeader>
                       <TableRow className="bg-slate-50">

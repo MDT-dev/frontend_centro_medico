@@ -1,48 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { format } from "date-fns"
-import { CalendarIcon } from "lucide-react"
-
-import { Sidebar } from "@/components/dashboard/sidebar"
-import { Header } from "@/components/dashboard/header"
-import { TasksContent } from "@/components/tasks/tasks-content"
-import { Button } from "@/components/ui/button"
-
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog"
-
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
-
-import { Input } from "@/components/ui/input"
-
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-
-import { Calendar } from "@/components/ui/calendar"
-
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -96,12 +54,7 @@ export default function TasksPage() {
   }
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <Sidebar />
-
-      <main className="flex-1 p-4 lg:p-6 lg:ml-64">
-        <ConsultasPage></ConsultasPage>
-      </main>
-    </div>
+   
+<ConsultasPage/>
   )
 }

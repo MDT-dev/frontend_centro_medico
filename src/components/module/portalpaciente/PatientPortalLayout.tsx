@@ -8,7 +8,6 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   Home,
   Calendar,
-  FileText,
   User,
   LogOut,
   Bell,
@@ -17,8 +16,8 @@ import {
   Heart,
   Plus,
   Pill,
-  FileInvoice,
   HelpCircle,
+  File,
 } from "lucide-react";
 
 interface NavItem {
@@ -40,7 +39,7 @@ const navigation: NavItem[] = [
   { name: "Dashboard", icon: Home, id: "dashboard" },
   { name: "Minhas Consultas", icon: Calendar, id: "appointments" },
   { name: "Marcar Consulta", icon: Plus, id: "schedule" },
-  { name: "Faturas", icon: FileInvoice, id: "invoices" },
+  { name: "Faturas", icon: File, id: "invoices" },
   { name: "Prescrições", icon: Pill, id: "prescriptions" },
   { name: "Meu Perfil", icon: User, id: "profile" },
 ];

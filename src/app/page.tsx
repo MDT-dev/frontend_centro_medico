@@ -1,4 +1,3 @@
-import { Sidebar } from "@/components/dashboard/sidebar"
 import { Header } from "@/components/dashboard/header"
 import { StatsCards } from "@/components/dashboard/stats-cards"
 import { ProjectAnalytics } from "@/components/dashboard/project-analytics"
@@ -15,12 +14,9 @@ import { Button } from "@/components/ui/button"
 export default async function DashboardPage() {
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <div className="hidden lg:block">
-        <Sidebar />
-      </div>
+   
 
-      <main className="flex-1 p-3 md:p-4 lg:p-5 lg:ml-64">
+      <main className=" p-3 md:p-4 lg:p-5 lg:ml-64">
         <Header
           title="Painel de Controlo do Centro Médico"
           description="Gerencie consultas, pacientes e campanhas de saúde com eficiência."
@@ -60,6 +56,5 @@ export default async function DashboardPage() {
           </div>
         </div>
       </main>
-    </div>
   )
 }

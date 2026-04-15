@@ -308,7 +308,7 @@ export function DoctorSchedule({
               <CardContent>
                 {!isDayOff(selectedViewDay) ? (
                   <div className="space-y-3">
-                    {getScheduleForDay(selectedViewDay)?.slots.map((slot: { time: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined; appointmentId: any; }, idx: Key | null | undefined) => (
+                    {getScheduleForDay(selectedViewDay)?.slots.map((slot: { time: string; appointmentId: any; }, idx: Key | null | undefined) => (
                       <div key={idx} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
                         <div className="flex items-center gap-3">
                           <ClockIcon className="h-5 w-5 text-teal-500" />
@@ -323,7 +323,7 @@ export function DoctorSchedule({
                           variant="ghost" 
                           size="sm" 
                           className="text-red-500"
-                          onClick={() => onRemoveTimeSlot(selectedViewDay, slot.time)}
+                          onClick={() => onRemoveTimeSlot(selectedViewDay, String(slot.time))}
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>

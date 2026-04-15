@@ -10,12 +10,7 @@ export default function LogoutPage() {
   const router = useRouter()
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <Sidebar />
-
-      <main className="flex-1 p-4 lg:p-6 lg:ml-64">
-        <Header />
-
+      <main>
         <div className="flex items-center justify-center min-h-[calc(100vh-100px)]">
           <Card className="p-8 max-w-md w-full text-center space-y-6 animate-fade-in">
             <div className="flex justify-center">
@@ -38,6 +33,5 @@ export default function LogoutPage() {
           </Card>
         </div>
       </main>
-    </div>
   )
 }

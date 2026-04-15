@@ -5,11 +5,9 @@ import { UserManagementPage } from "@/components/module/users-main/UserManagemen
 export default function UsersPage() {
     
     return (
-        <div className="flex min-h-screen bg-background">
-            <Sidebar />
-            <main className="flex-1 p-4 lg:p-6 lg:ml-64">
+       
+            <main className="p-6">
                <UserManagementPage></UserManagementPage>
             </main>
-        </div>
     );
 }
