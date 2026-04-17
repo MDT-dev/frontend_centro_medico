@@ -1,6 +1,5 @@
 import { Sidebar } from "@/components/dashboard/sidebar"
 import { Header } from "@/components/dashboard/header"
-import { AnalyticsContent } from "@/components/analytics/analytics-content"
 import { Button } from "@/components/ui/button"
 
 export default function AnalyticsPage() {
