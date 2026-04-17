@@ -1,4 +1,3 @@
-import { Sidebar } from "@/components/dashboard/sidebar"
 import { Header } from "@/components/dashboard/header"
 import { Button } from "@/components/ui/button"
 
@@ -19,9 +18,7 @@ export default function AnalyticsPage() {
           }
         />
 
-        <div className="mt-6">
-          <AnalyticsContent />
-        </div>
+      
       </main>
   )
 }
