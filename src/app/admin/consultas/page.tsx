@@ -54,7 +54,6 @@ export default function TasksPage() {
   }
 
   return (
-   
-<ConsultasPage/>
+    <ConsultasPage />
   )
 }

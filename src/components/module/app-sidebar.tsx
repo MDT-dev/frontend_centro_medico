@@ -20,7 +20,20 @@ import {
     SidebarMenuSubItem,
     SidebarRail,
 } from "@/components/ui/sidebar"
-import {  Building2, ChevronDown,Home, LogOut, LucideIcon, Settings,  Users } from 'lucide-react'
+import {
+     ChevronDown, LogOut, LucideIcon, Settings, Home,
+    Users,
+    Building2,
+    
+    Calendar,
+    DollarSign,
+    Pill,
+    UserCog,
+    FileText,
+    Activity,
+    Stethoscope,
+    Syringe,
+} from 'lucide-react'
 import { useAuthStore } from "@/store/auth"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible"
 import { Logo } from "../ui-system/logo"
@@ -44,23 +57,23 @@ const modules: NavItem[] = [
     {
         title: "Usuários",
         href: "/admin/users",
-        icon: Building2,
+        icon: UserCog,
     },
 
-     {
+    {
         title: "Consultas",
         href: "/admin/consultas",
-        icon: Building2,
+        icon: FileText,
     },
-     {
+    {
         title: "Financeiro",
         href: "/admin/financeiro",
-        icon: Building2,
+        icon: DollarSign,
     },
-     {
+    {
         title: "Farmacia",
         href: "/admin/farmacia",
-        icon: Building2,
+        icon: Pill,
     },
 
     {

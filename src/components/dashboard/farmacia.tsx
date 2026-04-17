@@ -60,7 +60,9 @@ import {
   Calendar,
   DollarSign,
   RefreshCw,
+  ShoppingCart,
 } from "lucide-react";
+import { VendasTab } from "../module/farmacia/VendasTab";
 
 // Dados estáticos (simulando backend)
 const initialMedicamentos = [
@@ -219,8 +221,8 @@ export default function FarmaciaPage() {
   };
 
   const handleEditMedicamento = () => {
-    setMedicamentos(medicamentos.map(m => 
-      m.id === selectedMedicamento.id 
+    setMedicamentos(medicamentos.map(m =>
+      m.id === selectedMedicamento.id
         ? { ...m, ...formData, stock: parseInt(formData.stock), preco: parseFloat(formData.preco) }
         : m
     ));
@@ -350,6 +352,10 @@ export default function FarmaciaPage() {
         {/* TABS */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
           <TabsList className="bg-white shadow-sm">
+            <TabsTrigger value="vendas" className="gap-2">
+              <ShoppingCart className="h-4 w-4" />
+              Vendas
+            </TabsTrigger>
             <TabsTrigger value="inventory" className="gap-2">
               <Package className="h-4 w-4" />
               Inventário
@@ -363,6 +369,10 @@ export default function FarmaciaPage() {
               Alertas
             </TabsTrigger>
           </TabsList>
+
+          <TabsContent value="vendas">
+            <VendasTab />
+          </TabsContent>
 
           <TabsContent value="inventory" className="space-y-4">
             {/* SEARCH AND FILTERS */}
@@ -424,7 +434,7 @@ export default function FarmaciaPage() {
                       {filteredMedicamentos.map((m) => {
                         const stockStatus = getStockStatus(m.stock);
                         const daysUntilExpiry = Math.ceil((new Date(m.validade).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
-                        
+
                         return (
                           <TableRow key={m.id} className="hover:bg-slate-50 transition-colors">
                             <TableCell className="font-medium">
@@ -525,7 +535,7 @@ export default function FarmaciaPage() {
                     </p>
                   </div>
                 </div>
-                
+
                 <div>
                   <h4 className="font-semibold mb-3">Top Medicamentos Mais Vendidos</h4>
                   <div className="space-y-3">
@@ -555,7 +565,7 @@ export default function FarmaciaPage() {
                     </AlertDescription>
                   </Alert>
                 )}
-                
+
                 {medicamentos.filter(m => m.status === "expirando").length > 0 && (
                   <Alert className="border-orange-200 bg-orange-50">
                     <Clock className="h-4 w-4 text-orange-600" />
@@ -564,7 +574,7 @@ export default function FarmaciaPage() {
                     </AlertDescription>
                   </Alert>
                 )}
-                
+
                 {medicamentos.filter(m => m.status === "expirado").length > 0 && (
                   <Alert className="border-red-200 bg-red-50">
                     <XCircle className="h-4 w-4 text-red-600" />
@@ -594,6 +604,7 @@ export default function FarmaciaPage() {
               </CardContent>
             </Card>
           </TabsContent>
+
         </Tabs>
       </div>
 

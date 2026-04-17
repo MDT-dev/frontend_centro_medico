@@ -89,7 +89,13 @@ import {
   Grid3x3,
   Bell,
   RefreshCw,
+  Wallet,
 } from "lucide-react";
+import { useFaturamentoConsultas } from "@/hooks/useFaturamentoConsultas";
+import { ItemFaturaConsulta } from "@/types/faturamento.types";
+import { FaturamentoConsultaModal } from "./FaturamentoConsultaModal";
+import { FaturaConsultaModal } from "./FaturaConsultaModal";
+import { FechoDiaConsolidadoModal } from "./FechoDiaConsolidadoModal";
 
 // Tipos de consulta
 type AppointmentStatus = "scheduled" | "confirmed" | "in_progress" | "completed" | "cancelled" | "no_show";
@@ -300,7 +306,7 @@ const typeConfig: Record<AppointmentType, { label: string; color: string; icon: 
   procedure: { label: "Procedimento", color: "bg-pink-100 text-pink-700", icon: Scissors },
 };
 
-export  function ConsultasPage() {
+export function ConsultasPage() {
   const [appointments, setAppointments] = useState<Appointment[]>(initialAppointments);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
@@ -315,6 +321,21 @@ export  function ConsultasPage() {
   const [showCompleteDialog, setShowCompleteDialog] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
   const [activeTab, setActiveTab] = useState("agenda");
+
+
+  const [showFaturamentoDialog, setShowFaturamentoDialog] = useState(false);
+  const [showFaturaDialog, setShowFaturaDialog] = useState(false);
+  const [showFechoConsolidadoDialog, setShowFechoConsolidadoDialog] = useState(false);
+  const [consultaParaFaturar, setConsultaParaFaturar] = useState<any>(null);
+  const [faturaEmitida, setFaturaEmitida] = useState<any>(null);
+
+  const {
+    emitirFaturaConsulta,
+    getFaturaByConsultaId,
+    getResumoConsultasDia,
+    faturasConsultas
+  } = useFaturamentoConsultas();
+
 
   // Form state
   const [formData, setFormData] = useState({
@@ -347,21 +368,21 @@ export  function ConsultasPage() {
   // Filter appointments
   const filteredAppointments = appointments.filter((apt) => {
     const matchesSearch = apt.patientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         apt.doctorName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         apt.reason.toLowerCase().includes(searchTerm.toLowerCase());
+      apt.doctorName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      apt.reason.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === "all" || apt.status === statusFilter;
     const matchesDoctor = doctorFilter === "all" || apt.doctorId.toString() === doctorFilter;
-    
+
     let matchesDate = true;
     const today = new Date().toISOString().split('T')[0];
     const tomorrow = new Date(Date.now() + 86400000).toISOString().split('T')[0];
     const weekStart = new Date(Date.now() - new Date().getDay() * 86400000).toISOString().split('T')[0];
     const weekEnd = new Date(Date.now() + (6 - new Date().getDay()) * 86400000).toISOString().split('T')[0];
-    
+
     if (dateFilter === "today") matchesDate = apt.date === today;
     else if (dateFilter === "tomorrow") matchesDate = apt.date === tomorrow;
     else if (dateFilter === "week") matchesDate = apt.date >= weekStart && apt.date <= weekEnd;
-    
+
     return matchesSearch && matchesStatus && matchesDoctor && matchesDate;
   });
 
@@ -377,7 +398,7 @@ export  function ConsultasPage() {
   const handleAddAppointment = () => {
     const patient = patients.find(p => p.id.toString() === formData.patientId);
     const doctor = doctors.find(d => d.id.toString() === formData.doctorId);
-    
+
     const newAppointment: Appointment = {
       id: appointments.length + 1,
       patientId: parseInt(formData.patientId),
@@ -401,29 +422,9 @@ export  function ConsultasPage() {
     setFormData({ patientId: "", doctorId: "", date: "", time: "", duration: "30", type: "consultation", reason: "", symptoms: "" });
   };
 
-  const handleCompleteAppointment = () => {
-    if (selectedAppointment) {
-      setAppointments(appointments.map(a => 
-        a.id === selectedAppointment.id 
-          ? { 
-              ...a, 
-              status: "completed", 
-              diagnosis: clinicalData.diagnosis, 
-              prescription: clinicalData.prescription, 
-              notes: clinicalData.notes,
-              updatedAt: new Date().toISOString()
-            } 
-          : a
-      ));
-      setShowCompleteDialog(false);
-      setSelectedAppointment(null);
-      setClinicalData({ diagnosis: "", prescription: "", notes: "" });
-    }
-  };
-
   const handleCancelAppointment = () => {
     if (selectedAppointment) {
-      setAppointments(appointments.map(a => 
+      setAppointments(appointments.map(a =>
         a.id === selectedAppointment.id ? { ...a, status: "cancelled", updatedAt: new Date().toISOString() } : a
       ));
       setShowCancelDialog(false);
@@ -432,21 +433,110 @@ export  function ConsultasPage() {
   };
 
   const handleStartAppointment = (appointment: Appointment) => {
-    setAppointments(appointments.map(a => 
+    setAppointments(appointments.map(a =>
       a.id === appointment.id ? { ...a, status: "in_progress" } : a
     ));
   };
 
   // Group appointments by time for calendar view
   const timeSlots = ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00"];
-  
+
   const appointmentsByTime = timeSlots.map(slot => ({
     time: slot,
     appointments: filteredAppointments.filter(a => a.time === slot)
   }));
 
+  // Adicionar função para buscar dados do fecho consolidado
+  const getDadosFechoConsolidado = () => {
+    const resumoConsultas = getResumoConsultasDia();
+    // Buscar dados da farmácia do localStorage
+    const storedFaturasFarmacia = localStorage.getItem('farmacia_faturas');
+    const faturasFarmacia = storedFaturasFarmacia ? JSON.parse(storedFaturasFarmacia) : [];
+    const faturasFarmaciaHoje = faturasFarmacia.filter((f: any) =>
+      new Date(f.data).toDateString() === new Date().toDateString()
+    );
+
+    const totalFarmacia = faturasFarmaciaHoje.reduce((acc: number, f: any) => acc + f.total, 0);
+    const porPagamentoFarmacia = {
+      dinheiro: faturasFarmaciaHoje.filter((f: any) => f.formaPagamento === 'dinheiro').reduce((acc: number, f: any) => acc + f.total, 0),
+      multicaixa: faturasFarmaciaHoje.filter((f: any) => f.formaPagamento === 'multicaixa').reduce((acc: number, f: any) => acc + f.total, 0),
+      transferencia: faturasFarmaciaHoje.filter((f: any) => f.formaPagamento === 'transferencia').reduce((acc: number, f: any) => acc + f.total, 0),
+      seguro: faturasFarmaciaHoje.filter((f: any) => f.formaPagamento === 'seguro').reduce((acc: number, f: any) => acc + f.total, 0),
+    };
+
+    return {
+      data: new Date(),
+      consultas: {
+        total: resumoConsultas.total,
+        quantidade: resumoConsultas.quantidade,
+        porMedico: resumoConsultas.porMedico,
+        porEspecialidade: resumoConsultas.porEspecialidade,
+      },
+      farmacia: {
+        total: totalFarmacia,
+        quantidade: faturasFarmaciaHoje.length,
+        porPagamento: porPagamentoFarmacia,
+      },
+      totalGeral: resumoConsultas.total + totalFarmacia,
+      quantidadeTotal: resumoConsultas.quantidade + faturasFarmaciaHoje.length,
+    };
+  };
+
+  
+  // MANTER ESTA FUNÇÃO (linhas ~506-518)
+  const handleCompleteAppointment = (appointment: Appointment) => {
+    const faturaExistente = getFaturaByConsultaId(appointment.id);
+    if (faturaExistente) {
+      setFaturaEmitida(faturaExistente);
+      setShowFaturaDialog(true);
+    } else {
+      setConsultaParaFaturar(appointment);
+      setShowFaturamentoDialog(true);
+    }
+  };
+
+  // Função para confirmar faturamento
+  const handleConfirmarFaturamento = (dados: {
+    items: ItemFaturaConsulta[];
+    formaPagamento: 'dinheiro' | 'multicaixa' | 'transferencia' | 'seguro';
+    desconto: number;
+    observacoes: string;
+  }) => {
+    if (consultaParaFaturar) {
+      const fatura = emitirFaturaConsulta({
+        consultaId: consultaParaFaturar.id,
+        pacienteId: consultaParaFaturar.patientId,
+        pacienteNome: consultaParaFaturar.patientName,
+        pacienteNif: undefined,
+        medicoNome: consultaParaFaturar.doctorName,
+        medicoEspecialidade: consultaParaFaturar.doctorSpecialty,
+        items: dados.items,
+        formaPagamento: dados.formaPagamento,
+        desconto: dados.desconto,
+        observacoes: dados.observacoes,
+      });
+
+      // Atualizar status da consulta para completed
+      setAppointments(appointments.map(a =>
+        a.id === consultaParaFaturar.id
+          ? {
+            ...a,
+            status: "completed",
+            updatedAt: new Date().toISOString(),
+            diagnosis: dados.items.find(i => i.tipo === 'consulta')?.descricao || 'Consulta realizada'
+          }
+          : a
+      ));
+
+      setFaturaEmitida(fatura);
+      setShowFaturamentoDialog(false);
+      setShowFaturaDialog(true);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-cyan-50 to-blue-50">
+
       <div className="p-6 space-y-6 max-w-7xl mx-auto">
         {/* HEADER */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -482,6 +572,14 @@ export  function ConsultasPage() {
             <Button className="bg-gradient-to-r from-cyan-600 to-blue-700 hover:from-cyan-700 hover:to-blue-800 gap-2 shadow-lg" onClick={() => setShowAddDialog(true)}>
               <Plus className="h-4 w-4" />
               Nova Consulta
+            </Button>
+            <Button
+              variant="outline"
+              className="gap-2"
+              onClick={() => setShowFechoConsolidadoDialog(true)}
+            >
+              <Wallet className="h-4 w-4" />
+              Fecho Consolidado
             </Button>
           </div>
         </div>
@@ -1040,6 +1138,7 @@ export  function ConsultasPage() {
       </Dialog>
 
       {/* COMPLETE APPOINTMENT DIALOG */}
+      {/* COMPLETE APPOINTMENT DIALOG */}
       <Dialog open={showCompleteDialog} onOpenChange={setShowCompleteDialog}>
         <DialogContent className="sm:max-w-2xl">
           <DialogHeader>
@@ -1068,10 +1167,42 @@ export  function ConsultasPage() {
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowCompleteDialog(false)}>Cancelar</Button>
-            <Button className="bg-emerald-600 hover:bg-emerald-700" onClick={handleCompleteAppointment}>Concluir Consulta</Button>
+            <Button
+              className="bg-emerald-600 hover:bg-emerald-700"
+              onClick={() => {
+                setShowCompleteDialog(false);
+                handleCompleteAppointment(selectedAppointment!);
+              }}
+            >
+              Concluir e Faturar
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Modais de Faturamento */}
+      <FaturamentoConsultaModal
+        open={showFaturamentoDialog}
+        onClose={() => setShowFaturamentoDialog(false)}
+        consulta={consultaParaFaturar}
+        onConfirmar={handleConfirmarFaturamento}
+      />
+
+      <FaturaConsultaModal
+        fatura={faturaEmitida}
+        open={showFaturaDialog}
+        onClose={() => setShowFaturaDialog(false)}
+      />
+
+      <FechoDiaConsolidadoModal
+        open={showFechoConsolidadoDialog}
+        onClose={() => setShowFechoConsolidadoDialog(false)}
+        dados={getDadosFechoConsolidado()}
+        onConfirmarFecho={(dados) => {
+          console.log('Fecho consolidado confirmado:', dados);
+          setShowFechoConsolidadoDialog(false);
+        }}
+      />
 
       {/* CANCEL APPOINTMENT DIALOG */}
       <AlertDialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
@@ -1088,6 +1219,7 @@ export  function ConsultasPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
     </div>
   );
 }
