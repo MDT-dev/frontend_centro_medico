@@ -447,40 +447,54 @@ export function ConsultasPage() {
   }));
 
   // Adicionar função para buscar dados do fecho consolidado
-  const getDadosFechoConsolidado = () => {
-    const resumoConsultas = getResumoConsultasDia();
-    // Buscar dados da farmácia do localStorage
+// Adicionar função para buscar dados do fecho consolidado
+const getDadosFechoConsolidado = () => {
+  const resumoConsultas = getResumoConsultasDia();
+  
+  // Buscar dados da farmácia do localStorage (apenas no cliente)
+  let faturasFarmaciaHoje: any[] = [];
+  let totalFarmacia = 0;
+  let porPagamentoFarmacia = {
+    dinheiro: 0,
+    multicaixa: 0,
+    transferencia: 0,
+    seguro: 0,
+  };
+
+  // Verificar se está no cliente antes de acessar localStorage
+  if (typeof window !== 'undefined') {
     const storedFaturasFarmacia = localStorage.getItem('farmacia_faturas');
     const faturasFarmacia = storedFaturasFarmacia ? JSON.parse(storedFaturasFarmacia) : [];
-    const faturasFarmaciaHoje = faturasFarmacia.filter((f: any) =>
+    faturasFarmaciaHoje = faturasFarmacia.filter((f: any) =>
       new Date(f.data).toDateString() === new Date().toDateString()
     );
 
-    const totalFarmacia = faturasFarmaciaHoje.reduce((acc: number, f: any) => acc + f.total, 0);
-    const porPagamentoFarmacia = {
+    totalFarmacia = faturasFarmaciaHoje.reduce((acc: number, f: any) => acc + f.total, 0);
+    porPagamentoFarmacia = {
       dinheiro: faturasFarmaciaHoje.filter((f: any) => f.formaPagamento === 'dinheiro').reduce((acc: number, f: any) => acc + f.total, 0),
       multicaixa: faturasFarmaciaHoje.filter((f: any) => f.formaPagamento === 'multicaixa').reduce((acc: number, f: any) => acc + f.total, 0),
       transferencia: faturasFarmaciaHoje.filter((f: any) => f.formaPagamento === 'transferencia').reduce((acc: number, f: any) => acc + f.total, 0),
       seguro: faturasFarmaciaHoje.filter((f: any) => f.formaPagamento === 'seguro').reduce((acc: number, f: any) => acc + f.total, 0),
     };
+  }
 
-    return {
-      data: new Date(),
-      consultas: {
-        total: resumoConsultas.total,
-        quantidade: resumoConsultas.quantidade,
-        porMedico: resumoConsultas.porMedico,
-        porEspecialidade: resumoConsultas.porEspecialidade,
-      },
-      farmacia: {
-        total: totalFarmacia,
-        quantidade: faturasFarmaciaHoje.length,
-        porPagamento: porPagamentoFarmacia,
-      },
-      totalGeral: resumoConsultas.total + totalFarmacia,
-      quantidadeTotal: resumoConsultas.quantidade + faturasFarmaciaHoje.length,
-    };
+  return {
+    data: new Date(),
+    consultas: {
+      total: resumoConsultas.total,
+      quantidade: resumoConsultas.quantidade,
+      porMedico: resumoConsultas.porMedico,
+      porEspecialidade: resumoConsultas.porEspecialidade,
+    },
+    farmacia: {
+      total: totalFarmacia,
+      quantidade: faturasFarmaciaHoje.length,
+      porPagamento: porPagamentoFarmacia,
+    },
+    totalGeral: resumoConsultas.total + totalFarmacia,
+    quantidadeTotal: resumoConsultas.quantidade + faturasFarmaciaHoje.length,
   };
+};
 
   
   // MANTER ESTA FUNÇÃO (linhas ~506-518)

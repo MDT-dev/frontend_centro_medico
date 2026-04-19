@@ -1,22 +1,32 @@
-// consultas/hooks/useFaturamentoConsultas.ts
+// hooks/useFaturamentoConsultas.ts
 import { useState, useEffect } from 'react';
-import { FaturaConsulta, ItemFaturaConsulta, FechoDiaConsolidado } from '../types/faturamento.types';
+import { FaturaConsulta, ItemFaturaConsulta, FechoDiaConsolidado } from '@/types/faturamento.types';
 
 export function useFaturamentoConsultas() {
   const [faturasConsultas, setFaturasConsultas] = useState<FaturaConsulta[]>([]);
+  const [isClient, setIsClient] = useState(false);
 
-  // Carregar faturas do localStorage
+  // Marcar que está no cliente
   useEffect(() => {
-    const stored = localStorage.getItem('farmacia_faturas_consultas');
-    if (stored) {
-      setFaturasConsultas(JSON.parse(stored));
+    setIsClient(true);
+  }, []);
+
+  // Carregar faturas do localStorage (apenas no cliente)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('farmacia_faturas_consultas');
+      if (stored) {
+        setFaturasConsultas(JSON.parse(stored));
+      }
     }
   }, []);
 
-  // Salvar faturas
+  // Salvar faturas (apenas no cliente)
   const salvarFaturas = (novas: FaturaConsulta[]) => {
-    setFaturasConsultas(novas);
-    localStorage.setItem('farmacia_faturas_consultas', JSON.stringify(novas));
+    if (typeof window !== 'undefined') {
+      setFaturasConsultas(novas);
+      localStorage.setItem('farmacia_faturas_consultas', JSON.stringify(novas));
+    }
   };
 
   // Gerar número de fatura

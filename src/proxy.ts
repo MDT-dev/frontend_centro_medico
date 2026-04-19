@@ -7,12 +7,12 @@ const publicRoutes = ["/login"];
 const roleHomePages: Record<string, string> = {
   ADMIN: "/admin",
   GERENTE: "/dashboard",
-  MEDICO: "/medico",
+  MEDICO: "/doctor-portal",
   RECEPCIONISTA: "/recepcionista",
-  PACIENTE: "/paciente",
+  PACIENTE: "/portal-paciente",
 };
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const token = req.cookies.get("auth_token")?.value;
   const { pathname } = req.nextUrl;
 

@@ -23,7 +23,7 @@ const loginSchema = z.object({
 
 type LoginForm = z.infer<typeof loginSchema>
 
-interface AuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface AuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 export function AuthForm({ className, ...props }: AuthFormProps) {
   const router = useRouter()
@@ -100,15 +100,7 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
               <p className="text-red-500 text-xs">{errors.password.message}</p>
             )}
           </div>
-
-          <Link
-            href="/esqueci-senha"
-            className="text-sm text-accent-plum-600 hover:underline block text-right"
-          >
-            Esqueceu a senha?
-          </Link>
-
-          {/* <Button
+          <Button
             type="submit"
             disabled={loading}
             className="bg-cyan-600 hover:bg-cyan-700"
@@ -117,19 +109,16 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
               <LoaderPinwheel className="mr-2 h-4 w-4 animate-spin" />
             )}
             Login
-          </Button> */}
-          <Link href={"/admin"}>
-        
-           <Button
-            
-            className="bg-cyan-600 hover:bg-cyan-700"
-          >
-            {loading && (
-              <LoaderPinwheel className="mr-2 h-4 w-4 animate-spin" />
-            )}
-            Login
           </Button>
-            </Link>
+          <Link
+            href="/esqueci-senha"
+            className="text-sm text-accent-plum-600 hover:underline block text-right"
+          >
+            Esqueceu a senha?
+
+
+          </Link>
+
         </div>
       </form>
     </div>
