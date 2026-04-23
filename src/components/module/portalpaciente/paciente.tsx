@@ -114,6 +114,7 @@ import {
   HelpCircle,
   PanelsTopLeftIcon,
 } from "lucide-react";
+import { DropdownMenuProfile } from "@/components/ui-system/dropdown-profile";
 
 // Dados do paciente logado (simulado)
 const loggedPatient = {
@@ -259,18 +260,17 @@ const prescriptions = [
   },
 ];
 
-export  function PatientPortalPage() {
+export function PatientPortalPage() {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showScheduleDialog, setShowScheduleDialog] = useState(false);
   const [showExamDialog, setShowExamDialog] = useState(false);
   const [showInvoiceDialog, setShowInvoiceDialog] = useState(false);
-  const [showPrescriptionDialog, setShowPrescriptionDialog] = useState(false);
   const [showCancelDialog, setShowCancelDialog] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState<any>(null);
   const [selectedInvoice, setSelectedInvoice] = useState<any>(null);
-  const [selectedPrescription, setSelectedPrescription] = useState<any>(null);
-  
+
+
   // Form state for scheduling
   const [scheduleForm, setScheduleForm] = useState({
     doctorId: "",
@@ -364,7 +364,7 @@ export  function PatientPortalPage() {
               </div>
               <div>
                 <h1 className="text-xl font-bold bg-gradient-to-r from-blue-700 to-indigo-800 bg-clip-text text-transparent">
-                  Clínica Vida+
+                  Mwanganza
                 </h1>
                 <p className="text-xs text-slate-400">Portal do Paciente</p>
               </div>
@@ -392,11 +392,10 @@ export  function PatientPortalPage() {
                 <Button
                   key={item.id}
                   variant={activeTab === item.id ? "default" : "ghost"}
-                  className={`w-full justify-start gap-3 ${
-                    activeTab === item.id 
-                      ? "bg-gradient-to-r from-blue-600 to-indigo-700 text-white" 
-                      : "text-slate-600 hover:text-blue-600"
-                  }`}
+                  className={`w-full justify-start gap-3 ${activeTab === item.id
+                    ? "bg-gradient-to-r from-blue-600 to-indigo-700 text-white"
+                    : "text-slate-600 hover:text-blue-600"
+                    }`}
                   onClick={() => {
                     setActiveTab(item.id);
                     setSidebarOpen(false);
@@ -411,10 +410,7 @@ export  function PatientPortalPage() {
 
           {/* Logout */}
           <div className="p-4 border-t">
-            <Button variant="ghost" className="w-full justify-start gap-3 text-red-600 hover:text-red-700 hover:bg-red-50">
-              <LogOut className="h-5 w-5" />
-              Sair
-            </Button>
+            <DropdownMenuProfile />
           </div>
         </div>
       </aside>
@@ -700,11 +696,10 @@ export  function PatientPortalPage() {
                   {availableDoctors.filter(d => d.available).map((doctor) => (
                     <div
                       key={doctor.id}
-                      className={`p-4 border rounded-xl cursor-pointer transition-all hover:shadow-md ${
-                        scheduleForm.doctorId === doctor.id.toString() 
-                          ? "border-blue-500 bg-blue-50" 
-                          : "border-slate-200 hover:border-blue-300"
-                      }`}
+                      className={`p-4 border rounded-xl cursor-pointer transition-all hover:shadow-md ${scheduleForm.doctorId === doctor.id.toString()
+                        ? "border-blue-500 bg-blue-50"
+                        : "border-slate-200 hover:border-blue-300"
+                        }`}
                       onClick={() => setScheduleForm({ ...scheduleForm, doctorId: doctor.id.toString() })}
                     >
                       <div className="flex items-center gap-4">
@@ -740,9 +735,9 @@ export  function PatientPortalPage() {
                 <CardContent className="space-y-4">
                   <div>
                     <Label>Data</Label>
-                    <Input 
-                      type="date" 
-                      value={scheduleForm.date} 
+                    <Input
+                      type="date"
+                      value={scheduleForm.date}
                       onChange={(e) => setScheduleForm({ ...scheduleForm, date: e.target.value })}
                       min={new Date().toISOString().split('T')[0]}
                     />
@@ -778,14 +773,14 @@ export  function PatientPortalPage() {
                   </div>
                   <div>
                     <Label>Motivo da Consulta</Label>
-                    <Textarea 
-                      value={scheduleForm.reason} 
+                    <Textarea
+                      value={scheduleForm.reason}
                       onChange={(e) => setScheduleForm({ ...scheduleForm, reason: e.target.value })}
                       placeholder="Descreva o motivo da consulta..."
                     />
                   </div>
-                  <Button 
-                    className="w-full bg-green-600 hover:bg-green-700" 
+                  <Button
+                    className="w-full bg-green-600 hover:bg-green-700"
                     onClick={handleScheduleAppointment}
                     disabled={!scheduleForm.doctorId || !scheduleForm.date || !scheduleForm.time}
                   >

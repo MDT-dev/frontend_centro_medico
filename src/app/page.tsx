@@ -13,8 +13,6 @@ import { Button } from "@/components/ui/button"
 export default async function DashboardPage() {
 
   return (
-   
-
       <main className=" p-3 md:p-4 lg:p-5 lg:ml-64">
         <Header
           title="Painel de Controlo do Centro Médico - Mwanganza"
