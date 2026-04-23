@@ -87,7 +87,7 @@ export function PatientPortalLayout({
               </div>
               <div>
                 <h1 className="text-xl font-bold bg-gradient-to-r from-blue-700 to-indigo-800 bg-clip-text text-transparent">
-                  Clínica Vida+
+                 Mwanganza
                 </h1>
                 <p className="text-xs text-slate-400">Portal do Paciente</p>
               </div>

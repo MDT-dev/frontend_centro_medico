@@ -7,8 +7,8 @@ import { AuthForm } from "./components/auth-form"
 import { Logo } from "@/components/ui-system/logo"
 
 export const metadata: Metadata = {
-    title: "Autenticação - Centro Médico Digital",
-    description: "Faça login na plataforma Centro Médico Digital",
+    title: "Autenticação - Centro Médico Digital - Mwanganza",
+    description: "Faça login na plataforma Centro Médico Digital - Mwanganza",
 }
 
 const carouselSlides = [

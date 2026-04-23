@@ -2,7 +2,6 @@ import { Header } from "@/components/dashboard/header"
 import { StatsCards } from "@/components/dashboard/stats-cards"
 import { ProjectAnalytics } from "@/components/dashboard/project-analytics"
 import { Reminders } from "@/components/dashboard/reminders"
-import { ProjectList } from "@/components/dashboard/project-list"
 import { TeamCollaboration } from "@/components/dashboard/team-collaboration"
 import { ProjectProgress } from "@/components/dashboard/project-progress"
 import { MobileAppCard } from "@/components/dashboard/mobile-app-card"
@@ -18,7 +17,7 @@ export default async function DashboardPage() {
 
       <main className=" p-3 md:p-4 lg:p-5 lg:ml-64">
         <Header
-          title="Painel de Controlo do Centro Médico"
+          title="Painel de Controlo do Centro Médico - Mwanganza"
           description="Gerencie consultas, pacientes e campanhas de saúde com eficiência."
           actions={
             <>
@@ -49,11 +48,11 @@ export default async function DashboardPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+          {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
             <ProjectList />
             <MobileAppCard />
             <TimeTracker />
-          </div>
+          </div> */}
         </div>
       </main>
   )

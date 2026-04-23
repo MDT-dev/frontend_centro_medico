@@ -30,8 +30,6 @@ export function DropdownMenuProfile() {
     };
 
 
-
-
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -48,7 +46,7 @@ export function DropdownMenuProfile() {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-40" align="start">
                 <DropdownMenuGroup>
-                    <DropdownMenuLabel >My Account</DropdownMenuLabel>
+                    <DropdownMenuLabel >Minha Conta</DropdownMenuLabel>
                     <Link href="/admin/perfil">
                         <DropdownMenuItem >
                             Profile
@@ -57,35 +55,18 @@ export function DropdownMenuProfile() {
                     </Link>
 
                     <DropdownMenuItem>
-                        Settings
+                        Definições
                         <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-                    </DropdownMenuItem>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                    <DropdownMenuItem>Team</DropdownMenuItem>
-                    <DropdownMenuSub>
-                        <DropdownMenuSubTrigger>Invite users</DropdownMenuSubTrigger>
-                        <DropdownMenuPortal>
-                            <DropdownMenuSubContent>
-                                <DropdownMenuItem>Email</DropdownMenuItem>
-                                <DropdownMenuItem>Message</DropdownMenuItem>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem>More...</DropdownMenuItem>
-                            </DropdownMenuSubContent>
-                        </DropdownMenuPortal>
-                    </DropdownMenuSub>
-                    <DropdownMenuItem>
-                        New Team
-                        <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
 
                 <DropdownMenuSeparator />
+
+                <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                     <DropdownMenuItem onClick={handleLogout}>
-                        Log out
+                        Terminar sessão
                         <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
                     </DropdownMenuItem>
                 </DropdownMenuGroup>

@@ -6,7 +6,7 @@ export default function HelpPage() {
 
 
     <main className="p-6">
-      <Header title="Ajuda e Suporte" description="Encontre respostas e suporte para usar a Centro Médico Digital." />
+      <Header title="Ajuda e Suporte" description="Encontre respostas e suporte para usar a Centro Médico Digital. Mwanganza" />
 
       <HelpContent />
     </main>

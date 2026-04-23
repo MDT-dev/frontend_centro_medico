@@ -22,6 +22,7 @@ import {
   Activity,
   UserCog,
 } from "lucide-react";
+import { DropdownMenuProfile } from "@/components/ui-system/dropdown-profile";
 
 interface NavItem {
   name: string;
@@ -90,7 +91,7 @@ export function DoctorPortalLayout({
               </div>
               <div>
                 <h1 className="text-xl font-bold bg-gradient-to-r from-teal-700 to-emerald-800 bg-clip-text text-transparent">
-                  Clínica Vida+
+                 Mwanganza
                 </h1>
                 <p className="text-xs text-slate-400">Portal do Médico</p>
               </div>
@@ -144,14 +145,8 @@ export function DoctorPortalLayout({
               <Settings className="h-5 w-5" />
               Configurações
             </Button>
-            <Button
-              variant="ghost"
-              className="w-full justify-start gap-3 text-red-600 hover:text-red-700 hover:bg-red-50"
-              onClick={onLogout}
-            >
-              <LogOut className="h-5 w-5" />
-              Sair
-            </Button>
+           
+            <DropdownMenuProfile/>
           </div>
         </div>
       </aside>

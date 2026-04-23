@@ -51,42 +51,24 @@ const modules: NavItem[] = [
     {
         title: "Pacientes",
         icon: Users,
-        href: "/admin/pacientes"
+        href: "/recepcionista/pacientes"
     },
 
-    {
-        title: "Usuários | Funcionários",
-        href: "/admin/users",
-        icon: UserCog,
-    },
+ 
 
     {
         title: "Consultas",
-        href: "/admin/consultas",
+        href: "/recepcionista/consultas",
         icon: FileText,
     },
-    {
-        title: "Financeiro",
-        href: "/admin/financeiro",
-        icon: DollarSign,
-    },
+  
     {
         title: "Farmacia",
-        href: "/admin/farmacia",
+        href: "/recepcionista/farmacia",
         icon: Pill,
     },
 
-    {
-        title: "settings",
-        icon: Settings,
-        items: [
-            { title: "Currency", href: "/settings/currency" },
-            { title: "Location", href: "/settings/location" },
-            { title: "My Location", href: "/settings/my-location" },
-            { title: "Partner", href: "/settings/partner" },
-            { title: "Title", href: "/settings/title" },
-        ],
-    },
+   
 ]
 
 
@@ -178,7 +160,7 @@ function MenuTree({
 
 
 
-export function AppSidebar() {
+export function AppSidebarRecepcionista() {
     const logout = useAuthStore((state) => state.logout);
     const userRole = useAuthStore((state) => state.user?.role); // pegar role
     const router = useRouter();
@@ -209,7 +191,7 @@ export function AppSidebar() {
                 <SidebarMenu >
                     <SidebarMenuItem>
                         <SidebarMenuButton variant="outline" size="lg" asChild>
-                            <Link href={`/admin`}>
+                            <Link href={`/recepcionista`}>
                                 <Logo />
                             </Link>
                         </SidebarMenuButton>
@@ -232,7 +214,7 @@ export function AppSidebar() {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton asChild>
-                            <Link href={`/admin`}>
+                            <Link href={`/recepcionista`}>
                                 <Settings />
                                 <span>Account</span>
                             </Link>
