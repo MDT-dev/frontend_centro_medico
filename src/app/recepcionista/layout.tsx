@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Download, Filter, UserCircle2 } from "lucide-react";
 import { useParams, usePathname } from "next/navigation";
 import { AppSidebar } from "@/components/module/app-sidebar";
+import { AppSidebarRecepcionista } from "@/components/module/app-sidebar-recepcionista";
 
 
 export default function Layout({
@@ -23,7 +24,7 @@ export default function Layout({
     <main
     >
       <SidebarProvider>
-        <AppSidebar />
+        <AppSidebarRecepcionista />
         <SidebarInset>
           <header className="flex h-14 items-center gap-2 border-b px-3">
             <SidebarTrigger />

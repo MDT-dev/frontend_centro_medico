@@ -1,55 +1,61 @@
-import { Header } from "@/components/dashboard/header"
-import { StatsCards } from "@/components/dashboard/stats-cards"
-import { ProjectAnalytics } from "@/components/dashboard/project-analytics"
-import { Reminders } from "@/components/dashboard/reminders"
-// import { ProjectList } from "@/components/dashboard/project-list"
-import { TeamCollaboration } from "@/components/dashboard/team-collaboration"
-import { ProjectProgress } from "@/components/dashboard/project-progress"
-import { MobileAppCard } from "@/components/dashboard/mobile-app-card"
-import { TimeTracker } from "@/components/dashboard/time-tracker"
-import { Button } from "@/components/ui/button"
+'use client';
 
-export default async function DashboardPage() {
+import dynamic from 'next/dynamic';
+
+import { useState } from "react"
+
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { ConsultasPage } from "@/components/module/consultas/consultas"
+
+/* =========================
+   SCHEMA (VALIDAÇÃO REAL)
+========================= */
+const formSchema = z.object({
+  patient: z.string().min(2, "Nome obrigatório"),
+  date: z.date({ required_error: "Data obrigatória" }),
+  time: z.string().min(1, "Hora obrigatória"),
+  type: z.string().min(1, "Selecione o tipo"),
+
+  // PRONTUÁRIO
+  symptoms: z.string().min(5, "Descreva os sintomas"),
+  observations: z.string().optional(),
+  diagnosis: z.string().optional(),
+  plan: z.string().optional(),
+})
+
+export default function TasksPage() {
+  const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
+
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      patient: "",
+      time: "",
+      type: "",
+      symptoms: "",
+      observations: "",
+      diagnosis: "",
+      plan: "",
+    },
+  })
+
+  async function onSubmit(values: any) {
+    setLoading(true)
+
+    // simulação API
+    await new Promise((res) => setTimeout(res, 1500))
+
+    console.log("CONSULTA:", values)
+
+    setLoading(false)
+    setOpen(false)
+    form.reset()
+  }
+
   return (
-      <main className="p-6">
-        <Header
-          title="Centro Médico - Mwanganza"
-          description="Gerencie consultas, pacientes e campanhas de saúde com eficiência."
-          actions={
-            <>
-              <Button className="w-full sm:w-auto h-9 text-sm bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-300 hover:shadow-lg hover:shadow-primary/30 hover:scale-105">
-              </Button>
-              <Button
-                variant="outline"
-                className="w-full sm:w-auto h-9 text-sm transition-all duration-300 hover:shadow-md hover:scale-105 bg-transparent"
-              >
-                Relatório Diário
-              </Button>
-            </>
-          }
-        />
-
-        <div className="mt-4 md:mt-5 space-y-3 md:space-y-4">
-          <StatsCards />
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-4">
-            <div className="lg:col-span-2 space-y-3 md:space-y-4">
-              <ProjectAnalytics />
-              <TeamCollaboration />
-            </div>
-
-            <div className="space-y-3 md:space-y-4">
-              <Reminders />
-              <ProjectProgress />
-            </div>
-          </div>
-
-          {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
-            <ProjectList />
-            <MobileAppCard />
-            <TimeTracker />
-          </div> */}
-        </div>
-      </main>
+    <ConsultasPage />
   )
 }
