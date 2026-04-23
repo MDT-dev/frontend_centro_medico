@@ -26,7 +26,7 @@ export default function LogoutPage() {
               <Button variant="outline" className="flex-1 bg-transparent" onClick={() => router.back()}>
                 Cancelar
               </Button>
-              <Button className="flex-1 bg-primary hover:bg-primary/90" onClick={() => router.push("/")}>
+              <Button className="flex-1 bg-primary hover:bg-primary/90" onClick={() => router.push("/login")}>
                 Sair
               </Button>
             </div>

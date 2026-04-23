@@ -49,7 +49,7 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
         className: "bg-cyan-600 text-white",
         duration: 3000,
       })
-      router.push("/")
+     router.refresh()
     } catch (err: any) {
       toast({
         title: "Erro ao fazer login",
