@@ -19,7 +19,6 @@ export default function Layout({
 }: {
   children: React.ReactNode;
 }) {
-  const companySlug = usePathname().split("/")[2];
   return (
     <main
     >
@@ -29,48 +28,6 @@ export default function Layout({
           <header className="flex h-14 items-center gap-2 border-b px-3">
             <SidebarTrigger />
             <Separator orientation="vertical" className="h-4" />
-            <div className="flex flex-1 items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">Dashboard</span>
-                <Select defaultValue="last-30">
-                  <SelectTrigger className="h-8 w-40">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent align="start">
-                    <SelectItem value="today">Today</SelectItem>
-                    <SelectItem value="last-7">Last 7 days</SelectItem>
-                    <SelectItem value="last-30">Last 30 days</SelectItem>
-                    <SelectItem value="quarter">Last quarter</SelectItem>
-                  </SelectContent>
-                </Select>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="sm" className="gap-2">
-                      <Filter className="size-4" />
-                      Filters
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start">
-                    <DropdownMenuItem>Open only</DropdownMenuItem>
-                    <DropdownMenuItem>Completed only</DropdownMenuItem>
-                    <DropdownMenuItem>With priority</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-              <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm" className="gap-2">
-                  <Download className="size-4" />
-                  Export
-                </Button>
-                <Button size="sm" className="gap-2 bg-transparent text-black" asChild>
-                  <a href={`/company/${companySlug}/account`}>
-                    <UserCircle2 />
-                    <span>My Account</span>
-                  </a>
-                </Button>
-              </div>
-            </div>
-
           </header>
           {children}
         </SidebarInset>

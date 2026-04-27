@@ -30,12 +30,11 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
   const { toast } = useToast()
 
   const login = useAuthStore((s) => s.login)
-  const loading = useAuthStore((s) => s.loading)
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors,isSubmitting },
   } = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
   })
@@ -102,10 +101,10 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
           </div>
           <Button
             type="submit"
-            disabled={loading}
+            disabled={isSubmitting}
             className="bg-cyan-600 hover:bg-cyan-700"
           >
-            {loading && (
+            {isSubmitting && (
               <LoaderPinwheel className="mr-2 h-4 w-4 animate-spin" />
             )}
             Login

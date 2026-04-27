@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 
 const roleHomePages: Record<string, string> = {
   ADMIN: "/admin",
-  GERENTE: "/dashboard",
+  GERENTE: "/farmacia",
   MEDICO: "/doctor-portal",
   RECEPCIONISTA: "/recepcionista",
   PACIENTE: "/portal-paciente",

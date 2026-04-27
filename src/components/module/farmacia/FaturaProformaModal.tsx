@@ -104,8 +104,8 @@ export function FaturaProformaModal({ fatura, open, onClose, onConverter }: Fatu
         <div id="fatura-content" className="space-y-6 p-6 bg-white rounded-lg">
           {/* Cabeçalho */}
           <div className="text-center border-b pb-4">
-            <h2 className="text-2xl font-bold text-blue-700">SIGESA - Farmácia</h2>
-            <p className="text-sm text-gray-500">Centro Médico Angola</p>
+            <h2 className="text-2xl font-bold text-blue-700">Mwanganza - Farmácia</h2>
+            <p className="text-sm text-gray-500">Centro Médico Mwanganza</p>
             <p className="text-xs text-gray-400">NIF: 123456789 | Tel: +244 923 456 789</p>
             <p className="text-xs text-gray-400">Rua da Missão, 123 - Luanda, Angola</p>
           </div>

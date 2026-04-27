@@ -37,6 +37,7 @@ import {
 import { useAuthStore } from "@/store/auth"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible"
 import { Logo } from "../ui-system/logo"
+import { Button } from "../ui/button"
 
 type NavItem = {
     title: string
@@ -46,7 +47,10 @@ type NavItem = {
 }
 
 const modules: NavItem[] = [
-    { title: "Dashboard", icon: Home, href: "/" },
+
+    { 
+        title: "Dashboard", icon: Home, href: "/" 
+    },
 
     {
         title: "Pacientes",
@@ -54,20 +58,19 @@ const modules: NavItem[] = [
         href: "/recepcionista/pacientes"
     },
 
- 
-
     {
         title: "Consultas",
         href: "/recepcionista/consultas",
         icon: FileText,
     },
-  
-    {
-        title: "Farmacia",
-        href: "/recepcionista/farmacia",
-        icon: Pill,
-    },
 
+     {
+        title: "Vendas",
+        href: "/recepcionista/vendas",
+        icon: FileText,
+    },
+  
+   
    
 ]
 
@@ -210,20 +213,15 @@ export function AppSidebarRecepcionista() {
                 </SidebarGroup>
             </SidebarContent>
 
-            <SidebarFooter className="text-gray-50">
+            <SidebarFooter className="">
                 <SidebarMenu>
                     <SidebarMenuItem>
+                       
                         <SidebarMenuButton asChild>
-                            <Link href={`/recepcionista`}>
-                                <Settings />
-                                <span>Account</span>
-                            </Link>
-                        </SidebarMenuButton>
-                        <SidebarMenuButton asChild>
-                            <button onClick={handleLogout}>
+                            <Button onClick={handleLogout}>
                                 <LogOut />
-                                <span>Logout</span>
-                            </button>
+                                <span>Terminar sessão</span>
+                            </Button>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarMenu>

@@ -134,8 +134,8 @@ export function FaturaFinalModal({ fatura, open, onClose }: FaturaFinalModalProp
           <div className="text-center border-b pb-4">
             <div className="flex justify-between items-start">
               <div className="text-left">
-                <h2 className="text-xl font-bold text-blue-700">SIGESA - Farmácia</h2>
-                <p className="text-xs text-gray-500">Centro Médico Angola</p>
+                <h2 className="text-xl font-bold text-blue-700">Mwanganza - Farmácia</h2>
+                <p className="text-xs text-gray-500">Centro Médico Mwanganza</p>
               </div>
               <div className="text-right">
                 <Badge className="bg-green-100 text-green-700 text-sm px-3 py-1">

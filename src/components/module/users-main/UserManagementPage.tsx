@@ -86,6 +86,12 @@ import {
   RefreshCw,
 } from "lucide-react";
 
+// Adicionar no topo com as outras importações
+import { sendWelcomeEmail } from '@/services/emailService';
+import { generateTemporaryPassword } from '@/utils/passwordUtils';
+import { useToast } from "@/hooks/use-toast";
+
+
 // Tipos de utilizadores
 type UserRole = "admin" | "doctor" | "nurse" | "pharmacist" | "receptionist" | "patient" | "laboratory" | "finance";
 type UserStatus = "active" | "inactive" | "suspended" | "pending";
@@ -294,6 +300,7 @@ const statusConfig: Record<UserStatus, { label: string; color: string; icon: any
 };
 
 export function UserManagementPage() {
+
   const [users, setUsers] = useState<User[]>(initialUsers);
   const [searchTerm, setSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState<string>("all");
@@ -305,7 +312,10 @@ export function UserManagementPage() {
   const [showResetPasswordDialog, setShowResetPasswordDialog] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [activeTab, setActiveTab] = useState("list");
-  
+   const { toast } = useToast()
+  // Adicionar com os outros states
+  const [isSendingEmail, setIsSendingEmail] = useState(false);
+
   // Form state
   const [formData, setFormData] = useState({
     name: "",
@@ -319,8 +329,8 @@ export function UserManagementPage() {
 
   const filteredUsers = users.filter((user) => {
     const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         user.phone.includes(searchTerm);
+      user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.phone.includes(searchTerm);
     const matchesRole = roleFilter === "all" || user.role === roleFilter;
     const matchesStatus = statusFilter === "all" || user.status === statusFilter;
     return matchesSearch && matchesRole && matchesStatus;
@@ -335,28 +345,73 @@ export function UserManagementPage() {
     return colors[id % colors.length];
   };
 
-  const handleAddUser = () => {
+  const handleAddUser = async () => {
+    // Validar campos obrigatórios
+    if (!formData.name || !formData.email || !formData.phone || !formData.role) {
+       toast({
+        title: "Por favor, preencha todos os campos obrigatórios",
+        className: "bg-red-600 text-white",
+        duration: 3000,
+      })
+      return;
+    }
+
+    // Gerar password temporária
+    // const temporaryPassword = generateTemporaryPassword(10);
+    const temporaryPassword = "123456";
+
     const newUser: User = {
       id: users.length + 1,
       name: formData.name,
       email: formData.email,
       phone: formData.phone,
       role: formData.role as UserRole,
-      status: "pending",
+      status: "active",
       department: formData.department,
       specialty: formData.specialty,
       licenseNumber: formData.licenseNumber,
       createdAt: new Date().toISOString().split('T')[0],
       permissions: [],
     };
-    setUsers([...users, newUser]);
-    setShowAddDialog(false);
-    setFormData({ name: "", email: "", phone: "", role: "", department: "", specialty: "", licenseNumber: "" });
+
+    setIsSendingEmail(true);
+
+    // Enviar email de boas-vindas
+    const emailResult = await sendWelcomeEmail({
+      to: formData.email,
+      firstName: formData.name.split(' ')[0],
+      email: formData.email,
+      password: temporaryPassword,
+      role: formData.role,
+      clinicName: "Centro Médico Mwanganza",
+    });
+
+    if (emailResult.success) {
+      setUsers([...users, newUser]);
+      setShowAddDialog(false);
+      setFormData({ name: "", email: "", phone: "", role: "", department: "", specialty: "", licenseNumber: "" });
+       toast({
+        title: `Utilizador ${newUser.name} criado com sucesso! Email enviado para ${newUser.email}`,
+        className: "bg-green-600 text-white",
+        duration: 3000,
+      })
+    } else {
+       toast({
+        title: `Utilizador criado mas houve um erro ao enviar o email: ${emailResult.error}`,
+        className: "bg-blue-600 text-white",
+        duration: 3000,
+      })
+      // Mesmo com erro no email, podemos adicionar o usuário
+      setUsers([...users, newUser]);
+      setShowAddDialog(false);
+    }
+
+    setIsSendingEmail(false);
   };
 
   const handleEditUser = () => {
     if (selectedUser) {
-      setUsers(users.map(u => 
+      setUsers(users.map(u =>
         u.id === selectedUser.id ? { ...u, ...formData, role: formData.role as UserRole } : u
       ));
       setShowEditDialog(false);
@@ -406,6 +461,41 @@ export function UserManagementPage() {
       patients: users.filter(u => u.role === "patient").length,
       admins: users.filter(u => u.role === "admin").length,
     },
+  };
+
+  const handleResetPassword = async () => {
+    if (!selectedUser) return;
+
+    const newPassword = generateTemporaryPassword(10);
+
+    setIsSendingEmail(true);
+
+    const emailResult = await sendWelcomeEmail({
+      to: selectedUser.email,
+      firstName: selectedUser.name.split(' ')[0],
+      email: selectedUser.email,
+      password: newPassword,
+      role: selectedUser.role,
+      clinicName: "Centro Médico Mwanganza",
+    });
+
+    if (emailResult.success) {
+       toast({
+        title: `Nova password enviada para ${selectedUser.email}`,
+        className: "bg-blue-600 text-white",
+        duration: 3000,
+      })
+    } else {
+        toast({
+        title: `Erro ao enviar email: ${emailResult.error}`,
+        className: "bg-red-600 text-white",
+        duration: 3000,
+      })
+    }
+
+    setIsSendingEmail(false);
+    setShowResetPasswordDialog(false);
+    setSelectedUser(null);
   };
 
   return (
@@ -824,9 +914,9 @@ export function UserManagementPage() {
                   <SelectItem value="nurse">Enfermeiro</SelectItem>
                   <SelectItem value="pharmacist">Farmacêutico</SelectItem>
                   <SelectItem value="receptionist">Recepcionista</SelectItem>
-                  <SelectItem value="patient">Paciente</SelectItem>
-                  <SelectItem value="laboratory">Laboratório</SelectItem>
-                  <SelectItem value="finance">Financeiro</SelectItem>
+                  {/* <SelectItem value="patient">Paciente</SelectItem> */}
+                  {/* <SelectItem value="laboratory">Laboratório</SelectItem> */}
+                  {/* <SelectItem value="finance">Financeiro</SelectItem> */}
                 </SelectContent>
               </Select>
             </div>
@@ -839,7 +929,7 @@ export function UserManagementPage() {
               <Input value={formData.specialty} onChange={(e) => setFormData({ ...formData, specialty: e.target.value })} />
             </div>
             <div>
-              <Label>Nº Cédula/Licença</Label>
+              <Label>Nº BI/Licença</Label>
               <Input value={formData.licenseNumber} onChange={(e) => setFormData({ ...formData, licenseNumber: e.target.value })} />
             </div>
           </div>
@@ -899,7 +989,7 @@ export function UserManagementPage() {
               <Input value={formData.specialty} onChange={(e) => setFormData({ ...formData, specialty: e.target.value })} />
             </div>
             <div>
-              <Label>Nº Cédula/Licença</Label>
+              <Label>Nº BI/Licença</Label>
               <Input value={formData.licenseNumber} onChange={(e) => setFormData({ ...formData, licenseNumber: e.target.value })} />
             </div>
           </div>
@@ -926,7 +1016,7 @@ export function UserManagementPage() {
                   </div>
                 </DialogTitle>
               </DialogHeader>
-              
+
               <div className="space-y-6">
                 {/* Informações Pessoais */}
                 <div>
@@ -1008,13 +1098,27 @@ export function UserManagementPage() {
             <AlertDialogTitle>Resetar Password</AlertDialogTitle>
             <AlertDialogDescription>
               Tem certeza que deseja resetar a password de <strong>{selectedUser?.name}</strong>?
-              Uma nova password temporária será enviada para o email do utilizador.
+              Uma nova password temporária será enviada para o email <strong>{selectedUser?.email}</strong>.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction onClick={() => setShowResetPasswordDialog(false)} className="bg-orange-600 hover:bg-orange-700">
-              Resetar Password
+            <AlertDialogCancel disabled={isSendingEmail}>Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleResetPassword}
+              className="bg-orange-600 hover:bg-orange-700"
+              disabled={isSendingEmail}
+            >
+              {isSendingEmail ? (
+                <>
+                  <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                  Enviando...
+                </>
+              ) : (
+                <>
+                  <Mail className="h-4 w-4 mr-2" />
+                  Resetar e Enviar Email
+                </>
+              )}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

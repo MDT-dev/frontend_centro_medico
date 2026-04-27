@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { ConsultasPage } from "@/components/module/consultas/consultas"
+import { RecepcionistaPage } from '@/components/module/vendas/RecepcionistaPage';
 
 /* =========================
    SCHEMA (VALIDAÇÃO REAL)
@@ -56,6 +57,6 @@ export default function TasksPage() {
   }
 
   return (
-    <ConsultasPage />
+    <RecepcionistaPage />
   )
 }

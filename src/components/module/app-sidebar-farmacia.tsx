@@ -37,7 +37,6 @@ import {
 import { useAuthStore } from "@/store/auth"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible"
 import { Logo } from "../ui-system/logo"
-import { Button } from "../ui/button"
 
 type NavItem = {
     title: string
@@ -47,36 +46,10 @@ type NavItem = {
 }
 
 const modules: NavItem[] = [
-    { title: "Dashboard", icon: Home, href: "/" },
 
-    {
-        title: "Pacientes",
-        icon: Users,
-        href: "/admin/pacientes"
+    { 
+        title: "Dashboard", icon: Home, href: "/farmacia" 
     },
-
-    {
-        title: "Usuários | Funcionários",
-        href: "/admin/users",
-        icon: UserCog,
-    },
-
-    {
-        title: "Consultas",
-        href: "/admin/vendas",
-        icon: FileText,
-    },
-    {
-        title: "Financeiro",
-        href: "/admin/financeiro",
-        icon: DollarSign,
-    },
-    {
-        title: "Farmacia",
-        href: "/admin/farmacia",
-        icon: Pill,
-    },
-
    
 ]
 
@@ -169,7 +142,7 @@ function MenuTree({
 
 
 
-export function AppSidebar() {
+export function AppSidebarFarmacia() {
     const logout = useAuthStore((state) => state.logout);
     const userRole = useAuthStore((state) => state.user?.role); // pegar role
     const router = useRouter();
@@ -200,7 +173,7 @@ export function AppSidebar() {
                 <SidebarMenu >
                     <SidebarMenuItem>
                         <SidebarMenuButton variant="outline" size="lg" asChild>
-                            <Link href={`/admin`}>
+                            <Link href={`/farmacia`}>
                                 <Logo />
                             </Link>
                         </SidebarMenuButton>
@@ -219,20 +192,14 @@ export function AppSidebar() {
                 </SidebarGroup>
             </SidebarContent>
 
-            <SidebarFooter className="text-gray-50">
+            <SidebarFooter>
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton asChild>
-                            <Link href={`/admin`}>
-                                <Settings />
-                                <span>Account</span>
-                            </Link>
-                        </SidebarMenuButton>
-                        <SidebarMenuButton asChild>
-                            <Button onClick={handleLogout}>
+                            <button onClick={handleLogout}>
                                 <LogOut />
-                                <span>Terminar sessão</span>
-                            </Button>
+                                <span>Sair</span>
+                            </button>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarMenu>
